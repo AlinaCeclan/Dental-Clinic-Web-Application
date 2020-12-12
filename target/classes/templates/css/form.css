@@ -1,0 +1,90 @@
+.container {
+    display: inline-block;
+    position: absolute;
+    max-width: 300px;
+    top: 30%;
+    right: 10%;
+    padding: 16px;
+    background-color: #333;
+    filter: blur(0,4px);
+    box-shadow:
+        /*bottom shadow*/
+            0px 20px 20px rgba(0,0,0,0.2),
+            0px 5px 10px rgba(0,0,0,0.2),
+                /*long bottom shadow*/
+            0px 70px 50px rgba(0,0,0,0.4),
+                /*right shadow*/
+            30px 50px 50px rgba(0,0,0,0.2),
+                /*left shadow*/
+            -30px 50px 50px rgba(0,0,0,0.2);
+}
+/* Full-width input fields */
+input[type=text], input[type=password], input[type=email], input[type=number]{
+    width: 250px;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=number]:focus{
+    background-color: #ddd;
+    outline: none;
+}
+/* Set a style for the submit button */
+.btn {
+    background-color:darkslategrey;
+    text-decoration: none;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 250px;
+    margin: 10px 15px;
+}
+.btn:hover {
+    opacity: 1;
+}
+form h1 {
+    color: #f1f1f1;
+    text-align: center;
+}
+.btn a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+label {
+    color: #f1f1f1;
+}
+
+select {
+    width: 250px;
+    padding: 6px;
+    margin: 10px 0 10px 10px;
+    border: none;
+}
+
+h3 {
+    color: #f1f1f1;
+}
+ul{
+    background-color: #333333;
+}
+input[type=datetime-local] {
+    width: 250px;
+    padding: 6px;
+    margin: 10px 0 10px 10px;
+    border: none;
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+.nav-btn {
+    text-decoration: none;
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    padding: 14px 16px;
+    background-color: darkslategrey;
+    border: none;
+    cursor: pointer;
+}
+.nav-btn:hover {
+    color: black;
+    background-color: white;
+}

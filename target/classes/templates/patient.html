@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/topnav.css}">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/form.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/button.css}">
+</head>
+<body>
+
+<div class="header" >
+    <img src="/images/logo/logo.png" alt="logo">
+    <p style='font-size:16px'> <i class='fas fa-phone-alt'></i>  +4 0756 784 523 </p>
+    <p style='font-size:16px'> <i class="material-icons">email</i> dentalclinic@office.com </p>
+
+</div>
+
+
+<div class="topnav">
+    <a class="active" th:href="@{'/home'}">Home</a>
+    <a th:href="@{'/servicesPrices'}">Services</a>
+    <a th:href="@{'/doctors'}">Our specialists</a>
+    <div class="topnav-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{'/login'}">Login</a>
+    </div>
+    <div class="topnav-right" sec:authorize="isAuthenticated()">
+        <form method="post" action="/logout">
+            <button type="submit"  class="nav-btn">
+                Logout
+            </button>
+        </form>
+    </div>
+    <div class="topnav-right" sec:authorize="hasAuthority('ROLE_1')">
+        <a th:href="@{'/justDoctor'}">DOCTOR</a>
+    </div>
+    <div class="topnav-right" sec:authorize="hasAuthority('ROLE_2')">
+        <a th:href="@{'/justPatient'}">PATIENT</a>
+    </div>
+</div>
+<div>
+    <div>
+    <h1>Patients List:</h1>
+    </div>
+    <table>
+        <tr>
+            <th>Patient</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Age</th>
+            <th>View appointments history</th>
+        </tr>
+
+        <tr th:each="patient:${patients}">
+            <td th:text="${patient.userDetails.firstName} + ' ' + ${patient.userDetails.lastName}"></td>
+            <td th:text="${patient.userDetails.email}"></td>
+            <td th:text="${patient.userDetails.phoneNumber}"></td>
+            <td th:text="${patient.userDetails.age}"></td>
+            <td>
+                <button class="btn">
+                <a th:href="@{'/viewPatientHistory/' + ${patient.userDetails.userDetailsId}}"> View </a>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <h1>Make an appointment for a patient:</h1>
+    <button class="btn">
+        <a th:href="@{'/addAppointment'}">Make an appointment</a>
+    </button>
+</div>
+
+<div>
+    <h1>Your dates:</h1>
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr>
+            <td th:text="${doctor.firstName}"></td>
+            <td th:text="${doctor.lastName}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td th:text="${doctor.phoneNumber}"></td>
+            <td>
+                <button class="btn">
+                    <a th:href="@{'/editUser/' + ${doctor.user.username}}">Update</a>
+                </button>
+                <button class="btn" >
+                    <a th:href="@{'/viewAppointments/' + ${doctor.user.userDetails.userDetailsId}}"> View appointments </a>
+                </button>
+<!--                <button class="btn" >-->
+<!--                    <a th:href="@{'/deleteUser/' + ${doctor.user.username}}"> Delete </a>-->
+<!--                </button>-->
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

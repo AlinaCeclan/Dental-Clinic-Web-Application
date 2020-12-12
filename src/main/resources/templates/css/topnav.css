@@ -1,0 +1,39 @@
+.topnav {
+    overflow: hidden;
+    background-color: darkslategrey;
+}
+.topnav a {
+    float: left;
+    color: white;;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+.topnav a:hover {
+    background-color: white;
+    color: black;
+}
+.topnav a.active {
+    background-color: darkcyan;
+    color: black;
+}
+.topnav a.active:hover {
+    background-color: #333333;
+    color: white;
+}
+.topnav-right {
+    float: right;
+}
+.header p{
+    background: white;
+    padding: 10px 10px 5px 0;
+    text-align: right;
+    color: black;
+}
+.header img{
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+}

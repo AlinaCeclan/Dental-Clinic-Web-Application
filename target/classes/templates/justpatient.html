@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>My Appointments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/topnav.css}">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/form.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/button.css}">
+</head>
+<body>
+<div class="header" >
+    <img src="/images/logo/logo.png" alt="logo">
+    <p style='font-size:16px'> <i class='fas fa-phone-alt'></i>  +4 0756 784 523 </p>
+    <p style='font-size:16px'> <i class="material-icons">email</i> dentalclinic@office.com </p>
+
+</div>
+
+
+<div class="topnav">
+    <a class="active" th:href="@{'/home'}">Home</a>
+    <a th:href="@{'/servicesPrices'}">Services</a>
+    <a th:href="@{'/doctors'}">Our specialists</a>
+    <div class="topnav-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{'/login'}">Login</a>
+    </div>
+    <div class="topnav-right" sec:authorize="isAuthenticated()">
+        <form method="post" action="/logout">
+            <button type="submit"  class="nav-btn">
+                Logout
+            </button>
+        </form>
+    </div>
+    <div class="topnav-right" sec:authorize="hasAuthority('ROLE_2')">
+        <a th:href="@{'/justPatient'}">PATIENT</a>
+    </div>
+</div>
+
+<div>
+    <h1>Your appointments:</h1>
+</div>
+
+<div>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Doctor</th>
+            <th>Dental Service</th>
+            <th>Appointment status</th>
+            <th>Actions</th>
+
+        </tr>
+
+        <tr th:each = "appointment:${appointments}">
+            <td th:text="${appointment.appointmentDateTime}"></td>
+            <td th:text="${appointment.userDetailsDoctor.firstName } + ' ' + ${appointment.userDetailsDoctor.lastName }"></td>
+            <td th:text="${appointment.getDentalServicesEntity().getDentalServiceName()}"></td>
+            <td th:text="${appointment.getCanceled()} ? 'canceled' : 'available'"></td>
+
+            <td>
+                <button class="btn">
+                    <a th:href="@{'/cancelAppointment/' + ${appointment.appointmentId}}"> Cancel </a>
+                </button>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<div>
+    <h1>Your dates:</h1>
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr>
+            <td th:text="${patient.firstName}"></td>
+            <td th:text="${patient.lastName}"></td>
+            <td th:text="${patient.email}"></td>
+            <td th:text="${patient.phoneNumber}"></td>
+            <td th:text="${patient.age}"></td>
+            <td>
+                <button class="btn">
+                    <a th:href="@{'/editUser/' + ${patient.user.username}}">Update</a>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

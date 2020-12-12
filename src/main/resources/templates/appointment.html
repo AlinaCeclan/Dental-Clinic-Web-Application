@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Make An Appointment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/topnav.css}">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/form.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/button.css}">
+</head>
+<body>
+
+
+
+<div class="header" >
+    <img src="/images/logo/logo.png" alt="logo">
+    <p style='font-size:16px'> <i class='fas fa-phone-alt'></i>  +4 0756 784 523 </p>
+    <p style='font-size:16px'> <i class="material-icons">email</i> dentalclinic@office.com </p>
+
+</div>
+
+<div class="topnav">
+    <a class="active" th:href="@{'/home'}">Home</a>
+    <a th:href="@{'/servicesPrices'}">Services</a>
+    <a th:href="@{'/doctors'}">Our specialists</a>
+    <div class="topnav-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{'/login'}">Login</a>
+    </div>
+    <div class="topnav-right" sec:authorize="isAuthenticated()">
+        <form method="post" action="/logout">
+            <button type="submit"  class="nav-btn">
+                Logout
+            </button>
+        </form>
+    </div>
+    <div class="topnav-right" sec:authorize="hasAuthority('ROLE_1')">
+        <a th:href="@{'/justDoctor'}">DOCTOR</a>
+    </div>
+</div>
+
+<form class="container" action="/saveAppointment" method="post" th:object="${appointments}">
+    <h1>Add an appointment</h1>
+    <select th:field="*{patientId}">
+        <option th:value="0">Select a patient</option>
+        <option th:each="patient:${patients}" th:value="${patient.userDetails.userDetailsId}"
+                th:text="${patient.userDetails.firstName} + ' ' + ${patient.userDetails.lastName}">
+        </option>
+    </select>
+
+
+    <select th:field="*{doctorId}">
+        <option th:value="0">Select a Doctor</option>
+        <option th:each="doctor:${doctors}" th:value="${doctor.userDetails.userDetailsId}"
+                th:text="${doctor.userDetails.firstName} + ' ' + ${doctor.userDetails.lastName}">
+        </option>
+    </select>
+
+    <select th:field="*{dentalServiceId}">
+        <option th:value="0">Select a service</option>
+        <option th:each="service:${dentalServices}" th:value="${service.dentalServiceId}"
+                th:text="${service.getDentalServiceName()}">
+        </option>
+    </select>
+
+            <input type="datetime-local" th:field="*{appointmentDateTime}" placeholder="Enter appointment date" name="appointmentDateTime" >
+
+            <button class="btn" type="submit" >Submit</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/topnav.css}">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/form.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/button.css}">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<script>
+    $().ready(function () {
+        $('.patient-enter-age-class').hide(); //ascunde elementul la deschiderea paginii
+        $('.doctor-add-specializations-class').hide(); //ascunde elementul la deschiderea paginii
+
+        var showExtraDiv = function (userTypeId) {
+            console.log("User type id is: " + userTypeId)
+            if(userTypeId == 2) {
+                $('.patient-enter-age-class').show();
+                $('.doctor-add-specializations.class').hide();
+            }
+            if(userTypeId == 1){
+                $('.patient-enter-age-class').hide();
+                $('.doctor-add-specializations-class').show();
+            }
+        };
+        $('#categoryElement').change(function() { //atasam un eveniment change la dropdown
+            userTypeId = $('#categoryElement option:selected').val(); //luam id-ul elementului selectat
+            showExtraDiv(userTypeId);
+        });
+        userTypeId = $('#categoryElement option:selected').val(); //luam id-ul elementului selectat
+        showExtraDiv(userTypeId);
+    });
+
+</script>
+
+<div class="header" >
+    <img src="/images/logo/logo.png" alt="logo">
+    <p style='font-size:16px'> <i class='fas fa-phone-alt'></i>  +4 0756 784 523 </p>
+    <p style='font-size:16px'> <i class="material-icons">email</i> dentalclinic@office.com </p>
+
+</div>
+
+
+<div class="topnav">
+    <a class="active" th:href="@{'/home'}">Home</a>
+    <a th:href="@{'/servicesPrices'}">Services</a>
+    <a th:href="@{'/doctors'}">Our specialists</a>
+    <div class="topnav-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{'/login'}">Login</a>
+    </div>
+    <div class="topnav-right" sec:authorize="isAuthenticated()">
+        <form method="post" action="/logout">
+            <button type="submit"  class="nav-btn">
+                Logout
+            </button>
+        </form>
+    </div>
+    <div class="topnav-right" sec:authorize="hasAuthority('ROLE_2')">
+        <a th:href="@{'/justPatient'}">PATIENT</a>
+    </div>
+</div>
+
+
+
+
+<form id="myRegisterForm" class="container" action="/register-user" method="post" th:object="${registerModel}">
+
+    <input th:field="*{firstName}" type="text" placeholder="Enter first name" name="firstName" >
+
+    <input th:field="*{lastName}" type="text" placeholder="Enter last name" name="lastName" >
+
+    <input th:field="*{email}" type="email" placeholder="Enter email" name="email"  >
+
+    <input th:field="*{phoneNumber}" type="text" placeholder="Enter telephone" name="phoneNumber" >
+
+    <input th:field="*{username}" type="text" placeholder="Enter Username" name="username"  >
+
+    <input th:field="*{password}" type="password" placeholder="Enter Password" name="password"  >
+
+    <select th:field="*{userTypesId}" id="categoryElement">
+        <option  th:value="0">Select user type</option>
+        <option  th:each="userType:${userTypes}" th:value="${userType.getUserTypeId()}"
+                 th:text="${userType.getUserTypeName()}" th:selected="${userType.userTypeId == registerModel.userTypesId}" >
+        </option>
+    </select>
+
+    <div class = "doctor-add-specializations-class">
+        <h3>Choose your specializations:</h3>
+        <ul>
+                <li th:each="s : ${specializations}">
+                    <input class= "doctor-add-specializations" type = "checkbox" name="specialization" th:value="${s.getSpecializationId()}" th:field="*{specializations}">
+                    <label th:text = "${s.getSpecializationName()}"></label>
+                </li>
+        </ul>
+    </div>
+
+    <div class = "patient-enter-age-class">
+    <input  th:field="*{age}" class="patient-enter-input" type="number" placeholder="Enter your age" name="input">
+    </div>
+
+    <button class="btn" type="submit" >Submit</button>
+
+</form>
+
+</body>
+</html>
